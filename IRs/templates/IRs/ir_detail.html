@@ -1,0 +1,16 @@
+{% extends "home/base.html" %}
+{% block content %}
+<small>
+  <a href="{% url 'ir-list' %}">Back to my Incident Reports</a>
+</small>
+<article class="media content-section mt-3">
+  <img class="rounded-circle article-img" src="{{object.author.profile.image.url}}"></img>
+  <div class="media-body">
+    <div class="article-metadata">
+      <a class="mr-2" href="#">{{ object.title}}</a>
+      <small class="text-muted">{{ object.date_posted }}</small>
+    </div>
+    <p class="article-content">{{ object.content }}</p>
+  </div>
+</article>
+{% endblock content %}

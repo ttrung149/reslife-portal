@@ -1,0 +1,63 @@
+@import "header.css";
+@import "login.css";
+@import "sidebar.css";
+
+body {
+  background: #fafafa;
+  color: #333333;
+  font-family: Verdana, Geneva, Tahoma, sans-serif
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
+}
+
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.table {
+  max-width: 1200px;
+  margin: auto;
+} 
+
+.table td {
+  vertical-align: middle !important;
+}
+
+.content {
+  margin-top: 110px;
+  margin-left: 10%;
+}
+
+.content-with-sidebar {
+  margin-top: 100px;
+  position: relative;
+  margin-left: 185px;
+  padding: 0px 10px;
+  margin-right: 10%;
+}
+
+.avatar-circle {
+  width: 100px;
+  height: 100px;
+  background-color: grey;
+  text-align: center;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+}
+
+.initials {
+  position: relative;
+  top: 25px; /* 25% of parent */
+  font-size: 50px; /* 50% of parent */
+  line-height: 50px; /* 50% of parent */
+  color: #fff;
+}

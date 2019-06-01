@@ -1,0 +1,21 @@
+{% extends "home/base.html" %}
+{% block content %}
+<small>
+  <a href="{% url 'home' %}">Back to Home</a>
+</small>
+<article class="mt-3 media content-section">
+  <div class="media-body">
+    <div class="article-metadata mb-2">
+      <small class="text-muted">{{ post.date_posted | date:"M d, Y"}}</small>
+    </div>
+    <h4>{{ post.title }}</h4>
+    <small class="text-muted" href="#">Posted by
+      <span class="font-weight-bold">
+        {{ post.author.first_name }} {{ post.author.last_name }}
+      </span>
+    </small>
+    <hr>
+    <p class="article-content">{{ post.content | linebreaks }}</p>
+  </div>
+</article>
+{% endblock content %}

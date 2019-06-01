@@ -1,0 +1,22 @@
+{% extends "home/base.html" %}
+{% block content %}
+<h3>Incident Report</h3>
+<br>
+<a class="text-secondary" href="#">Guide to write an IR</a>
+<br>
+<a href="{% url 'ir-create' %}">Write a new Incident Report</a>
+<hr>
+
+<h5 class="mb-4">My Incident Reports</h5>
+
+<ul class="list-group">
+  {% for ir in object_list %}
+  <li class="list-group-item">
+    <h6>
+      <a href="{% url 'ir-detail' ir.id%}">{{ ir.title }}</a>
+    </h6>
+    <small class="text-muted">{{ ir.date_posted }}</small>
+  </li>
+  {% endfor %}
+  </ol>
+  {% endblock content %}

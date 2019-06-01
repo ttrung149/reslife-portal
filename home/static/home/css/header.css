@@ -1,0 +1,10 @@
+.navbar {
+  max-height: 80px;
+  background: #4e5965 !important;
+}
+
+.navbar-brand {
+  color: #fafafa !important;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 20px;
+}

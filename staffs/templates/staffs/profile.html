@@ -1,0 +1,32 @@
+{% extends "home/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section">
+  <div class="container mb-4">
+    <h3 class="mt-2">Profile</h3>
+    <hr>
+    <div class="row">
+      <div class="col-lg-2">
+        <div class="avatar-circle mt-4">
+          <span class="initials">{{staff_profile.user.username | capfirst | first}}</span>
+        </div>
+      </div>
+      <div class="col-lg-10">
+        <h4 class="card-title mt-2">{{staff_profile.user.first_name}} {{staff_profile.user.last_name}}</h4>
+        <ul>
+          <li>
+            <small>Username: {{staff_profile.user.username}}</small>
+          </li>
+          <li>
+            <small>Email: {{staff_profile.user.email}}</small>
+          </li>
+          <li>
+            <small>{{staff_profile.room.room_number}} {{staff_profile.room.building}}</small>
+          </li>
+        </ul>
+        <a class="mt-4 btn btn-sm btn-outline-info" href="{% url 'update-profile' %}">Update Profile</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,163 @@
+{% extends 'home/base.html'%}
+
+{% block content %}
+<h3>Checkout resident</h3>
+<br>
+<div class="content-section">
+  <form method="GET" action=".">
+    <div class="row">
+      <div class="col-auto mr-auto">
+        <h5 class="mt-2">Filter Resident</h5>
+      </div>
+      <div class="col-auto">
+        <button type="submit" class="mt-2 btn btn-sm btn-outline btn-outline-info">Search</button>
+      </div>
+    </div>
+    <hr>
+    <div class="form-row">
+      <div class="form-group col-md-2">
+        <label for="first_name">First Name</label>
+        <input type="search" class="form-control" id="firstName" placeholder="First Name" name="first_name">
+      </div>
+      <div class="form-group col-md-2">
+        <label for="last_name">Last Name</label>
+        <input type="search" class="form-control" id="lastName" placeholder="Last Name" name="last_name">
+      </div>
+      <div class="form-group col-md-2">
+        <label for="student_ID">Student ID</label>
+        <input type="search" class="form-control" id="studentID" placeholder="Student ID" name="student_ID">
+      </div>
+
+      <div class="form-group col-md-2">
+        <label for="room_number">Room #</label>
+        <input type="search" class="form-control" id="roomNumber" placeholder="Room number" name="room_number">
+      </div>
+      <div class="form-group col-md-2">
+        <label for="building">Building</label>
+        <select id="building" class="form-control" name="building">
+          <option selected></option>
+          {% for building in buildings %}
+          <option value="{{ building.id }}">{{ building }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group col-md-2">
+        <label for="under_RA">Under RA</label>
+        <select id="under_RA" class="form-control" name="under_RA">
+          <option selected></option>
+          {% for staff in staffs %}
+          <option value="{{ staff.user.id }}">{{ staff }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+  </form>
+</div>
+
+<br>
+<table class="table">
+  <thead>
+    <tr class="table-secondary">
+      <td scope="col">Name</td>
+      <td scope="col">Student ID</td>
+      <td scope="col">Room</td>
+      <td scope="col">Under RA</td>
+      <td scope="col">Checkout status</td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for result in filtered_results %}
+    {% if result.is_checked_out %}
+    <tr class="table-success">
+      <td scope="col">
+        <small>{{ result.first_name }} {{ result.last_name }}</small>
+      </td>
+      <td scope="col">
+        <small>{{ result.student_ID }}</small>
+      </td>
+      <td scope="col">
+        <small>{{ result.room }}</small>
+      </td>
+      <td scope="col"><small>{{ result.under_RA }}</small></td>
+      <td scope="col">
+        <form method="POST" action="{% url 'checkout-resident' result.id %}">
+          {% csrf_token %}
+
+          <input type="hidden" name="first_name" value="{{request.GET.first_name}}" />
+          <input type="hidden" name="last_name" value="{{request.GET.last_name}}" />
+          <input type="hidden" name="student_ID" value="{{request.GET.student_ID}}" />
+          <input type="hidden" name="room_number" value="{{request.GET.room_number}}" />
+          <input type="hidden" name="building" value="{{request.GET.building}}" />
+          <input type="hidden" name="under_RA" value="{{request.GET.under_RA}}" />
+          <input type="hidden" name="page" value="{{request.GET.page}}" />
+
+          <small>
+            {{result.checked_out_time | date:"M d, Y" }} by {{ result.checked_out_by }}
+          </small>
+          <button class="btn btn-outline-info btn-sm ml-2" name="undo" type="submit">Undo</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td scope="col">
+        <small>{{ result.first_name }} {{ result.last_name }}</small>
+      </td>
+      <td scope="col">
+        <small>{{ result.student_ID }}</small>
+      </td>
+      <td scope="col">
+        <small>{{ result.room }}</small>
+      </td>
+      <td scope="col"><small>{{ result.under_RA }}</small></td>
+      <td scope="col">
+        <form method="POST" action="{% url 'checkout-resident' result.id %}">
+          {% csrf_token %}
+
+          <input type="hidden" name="first_name" value="{{request.GET.first_name}}" />
+          <input type="hidden" name="last_name" value="{{request.GET.last_name}}" />
+          <input type="hidden" name="student_ID" value="{{request.GET.student_ID}}" />
+          <input type="hidden" name="room_number" value="{{request.GET.room_number}}" />
+          <input type="hidden" name="building" value="{{request.GET.building}}" />
+          <input type="hidden" name="under_RA" value="{{request.GET.under_RA}}" />
+          <input type="hidden" name="page" value="{{request.GET.page}}" />
+
+          <button class="btn btn-outline-secondary btn-sm" name="checkout" type="submit">Checkout now</button>
+        </form>
+      </td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
+
+
+<div class="mt-4">
+  {% if filtered_results.has_other_pages %}
+  {% if filtered_results.has_previous %}
+  <a class="btn btn-outline-secondary btn-sm mb-4"
+    href="?first_name={{request.GET.first_name}}&last_name={{request.GET.last_name}}&student_ID={{request.GET.student_ID}}&room_number={{request.GET.room_number}}&building={{request.GET.building}}&under_RA={{request.GET.under_RA}}&page=1">First</a>
+  <a class="btn btn-outline-secondary btn-sm mb-4"
+    href="?first_name={{request.GET.first_name}}&last_name={{request.GET.last_name}}&student_ID={{request.GET.student_ID}}&room_number={{request.GET.room_number}}&building={{request.GET.building}}&under_RA={{request.GET.under_RA}}&page={{ filtered_results.previous_page_number }}">Previous</a>
+  {% endif %}
+  {% for num in filtered_results.paginator.page_range %}
+  {% if filtered_results.number == num %}
+  <a class="btn btn-secondary btn-sm mb-4"
+    href="?first_name={{request.GET.first_name}}&last_name={{request.GET.last_name}}&student_ID={{request.GET.student_ID}}&room_number={{request.GET.room_number}}&building={{request.GET.building}}&under_RA={{request.GET.under_RA}}&page={{ num }}">{{ num }}</a>
+  {% elif num > filtered_results.number|add:'-3' and num < filtered_results.number|add:'3' %}
+  <a class="btn btn-outline-secondary btn-sm mb-4"
+    href="?first_name={{request.GET.first_name}}&last_name={{request.GET.last_name}}&student_ID={{request.GET.student_ID}}&room_number={{request.GET.room_number}}&building={{request.GET.building}}&under_RA={{request.GET.under_RA}}&page={{ num }}">{{ num }}</a>
+  {% endif %}
+  {% endfor %}
+
+  {% if filtered_results.has_next %}
+  <a class="btn btn-outline-secondary btn-sm mb-4"
+    href="?first_name={{request.GET.first_name}}&last_name={{request.GET.last_name}}&student_ID={{request.GET.student_ID}}&room_number={{request.GET.room_number}}&building={{request.GET.building}}&under_RA={{request.GET.under_RA}}&page={{filtered_results.next_page_number}}">Next</a>
+  <a class="btn btn-outline-secondary btn-sm mb-4"
+    href="?first_name={{request.GET.first_name}}&last_name={{request.GET.last_name}}&student_ID={{request.GET.student_ID}}&room_number={{request.GET.room_number}}&building={{request.GET.building}}&under_RA={{request.GET.under_RA}}&page={{ filtered_results.paginator.num_pages }}">Last</a>
+  {% endif %}
+  {% endif %}
+
+</div>
+{% endblock content %}

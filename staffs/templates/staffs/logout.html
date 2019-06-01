@@ -1,0 +1,10 @@
+{% extends "home/base.html" %}
+{% load crispy_forms_tags %}
+{% block auth %}
+<div class="content">
+  <h3>You have been logged out.</h3>
+  <small class="text-muted mt-2">
+    Log back in <a href="{% url 'login' %}">here</a>
+  </small>
+</div>
+{% endblock auth %}
