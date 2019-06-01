@@ -63,7 +63,7 @@ def checkoutResidentView(request, pk):
 
 
 def roomInspectionView(request):
-    num_items_per_page = 2
+    num_items_per_page = 15
 
     filtered_results = filter_resident(request)
     page = request.GET.get('page', 1)
